@@ -1,0 +1,9 @@
+.tagline {
+  font-family: 'Brush Script MT', cursive;
+  color: #b03052;
+  font-size: 4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: pre-line;
+  line-height: 1.1;
+}

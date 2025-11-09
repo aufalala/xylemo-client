@@ -1,10 +1,13 @@
-function App() {
+import React from "react";
+import { AuthProvider } from "./contexts/AuthContext";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
+function App() {
   return (
-    <>
-      <h1>sup</h1>
-    </>
-  )
+    <AuthProvider>
+      <LoginPage />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
