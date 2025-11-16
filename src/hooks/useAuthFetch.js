@@ -46,7 +46,7 @@ export function useAuthFetch() {
         throw new Error("Expected JSON response");
       }
     },
-    [getToken, isAuthenticated, isLoading]
+    [getAccessToken, isAuthenticated, isLoading]
   );
 
   return { fetchWithAuth };
