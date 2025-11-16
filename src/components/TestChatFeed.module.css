@@ -1,0 +1,11 @@
+.isHighlight {
+  font-size: 2em;
+}
+
+.isOrder {
+  background-color: green;
+}
+
+.isFailedOrder {
+  background-color: red;
+}
