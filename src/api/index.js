@@ -1,12 +1,22 @@
-// import { ordersApi, chatsApi, productsApi, buyersApi } from './rest/index.js';
-// import socketClient from './socket/socketClient.js';
-// import * as socketHandlers from './socket/socketHandlers.js';
+import { useAuthFetch } from "../hooks/useAuthFetch.js";
 
-// export {
-//   ordersApi,
-//   chatsApi,
-//   productsApi,
-//   buyersApi,
-//   socketClient,
-//   socketHandlers,
-// };
+import * as chatAPI from "./rest/chatAPI.js";
+// import * as orderAPI from "./rest/orderAPI.js";
+// import * as productAPI from "./rest/productAPI.js";
+
+export function useAPI() {
+  const { fetchWithAuth } = useAuthFetch();
+  const api = {};
+
+  [
+    chatAPI,
+    // orderAPI,
+    // productAPI
+  ].forEach(module => {
+    for (const [key, fn] of Object.entries(module)) {
+      api[key] = (...args) => fn(fetchWithAuth, ...args);
+    }
+  });
+
+  return api;
+}
