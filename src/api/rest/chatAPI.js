@@ -1,3 +1,3 @@
 export async function getTodaysMessagesAPI(fetchWithAuth) {
-  return fetchWithAuth("/api/chat/today", {}, false);
+  return fetchWithAuth("/api/chat/today", {}, true);
 }
