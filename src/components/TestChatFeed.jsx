@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useChatFeed } from "../contexts/ChatFeedContext.jsx";
 
-import styles from "./TestChatFeed.module.css"
+import styles from "./_TestChatFeed.module.css"
 
 function TestChatFeed() {
   const { todaysMessages } = useChatFeed();
