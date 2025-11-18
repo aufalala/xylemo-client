@@ -3,12 +3,12 @@ import { useAuth } from "./useAuth.js";
 import { localServerURL, serverURL } from "../utils/urlConfig.js";
 
 export function useAuthFetch() {
-  const { getAccessToken, isAuthenticated, isLoading } = useAuth();
+  const { getAccessToken, isAuthenticated, authLoading } = useAuth();
 
   const fetchWithAuth = useCallback(
     async (path, options = {}, withAuth = false) => {
       if (withAuth) {
-        if (isLoading) {
+        if (authLoading) {
           throw new Error("Auth is still loading");
         }
         if (!isAuthenticated) {
@@ -46,7 +46,7 @@ export function useAuthFetch() {
         throw new Error("Expected JSON response");
       }
     },
-    [getAccessToken, isAuthenticated, isLoading]
+    [getAccessToken, isAuthenticated, authLoading]
   );
 
   return { fetchWithAuth };
