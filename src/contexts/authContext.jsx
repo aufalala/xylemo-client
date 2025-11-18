@@ -3,7 +3,8 @@ import { createContext, useState, useEffect, useCallback } from "react";
 export const AuthContext = createContext({
   user: null,
   isAuthenticated: false,
-  isLoading: true,
+  sessionLoading: true,
+  authLoading: true,
   login: async () => {},
   logout: () => {},
   getToken: async () => null,
@@ -12,25 +13,38 @@ export const AuthContext = createContext({
 export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
-  // const [tokenExpiry, setTokenExpiry] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   const storedToken = localStorage.getItem("token");
-  //   const storedExpiry = localStorage.getItem("tokenExpiry");
+  useEffect(() => {
+  const restoreSession = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/refresh-token", {
+        method: "POST",
+        credentials: "include",
+      });
 
-  //   if (storedUser) setUser(JSON.parse(storedUser));
-  //   if (storedToken) setToken(storedToken);
-  //   if (storedExpiry) setTokenExpiry(Number(storedExpiry));
+      if (!res.ok) {
+        return;
+      }
 
-  //   setIsLoading(false);
-  // }, []);
+      const data = await res.json();
+      setAccessToken(data.accessToken);
+      setUser(data.user);
+    } catch (e) {
+      console.error("Restore session failed:", e);
+    } finally {
+      setSessionLoading(false);
+    }
+  };
+
+  restoreSession();
+}, []);
 
   const login = useCallback(async (credentials) => {
-    setIsLoading(true);
+    setAuthLoading(true);
     try {
-      const res = await fetch("localhost:3000/api/auth/signin", {
+      const res = await fetch("http://localhost:3000/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -43,17 +57,14 @@ export function AuthProvider({ children }) {
 
       setAccessToken(data.accessToken);
       setUser(data.user);
-
-      // localStorage.setItem("user", JSON.stringify(data.user));
-      // localStorage.setItem("token", data.token);
-      // localStorage.setItem("tokenExpiry", Date.now() + data.expiresIn * 1000);
+      console.log(data.user);
     
     } catch (e) {
       console.error("Login failed:", e);
       throw e;
 
     } finally {
-      setIsLoading(false);
+      setAuthLoading(false);
     }
   }, []);
 
@@ -64,49 +75,7 @@ export function AuthProvider({ children }) {
     });
     setAccessToken(null);
     setUser(null);
-    // setUser(null);
-    // setToken(null);
-    // setTokenExpiry(null);
-
-    // localStorage.removeItem("user");
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("tokenExpiry");
   }, []);
-
-//   const getToken = useCallback(async () => {
-//   if (!token) return null;
-
-//   const now = Date.now();
-
-//   if (!tokenExpiry || now > tokenExpiry - 30000) {
-//     try {
-//       const res = await fetch("localhost:3000/api/auth/refresh-token", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       if (!res.ok) throw new Error("Failed to refresh token");
-
-//       const data = await res.json();
-//       setToken(data.token);
-//       setTokenExpiry(Date.now() + data.expiresIn * 1000);
-
-//       localStorage.setItem("token", data.token);
-//       localStorage.setItem("tokenExpiry", Date.now() + data.expiresIn * 1000);
-
-//       return data.token;
-//     } catch (err) {
-//       console.error("Token refresh failed:", err);
-//       logout();
-//       return null;
-//     }
-//   }
-
-//   return token;
-// }, [token, tokenExpiry, logout]);
 
   const getAccessToken = useCallback(async () => {
     if (!accessToken) return null;
@@ -116,7 +85,7 @@ export function AuthProvider({ children }) {
     const now = Date.now();
 
     if (expiresAt - now < 60 * 1000) {
-      const res = await fetch("localhost:3000/api/auth/refresh-token", {
+      const res = await fetch("http://localhost:3000/api/auth/refresh-token", {
         method: "POST",
         credentials: "include",
       });
@@ -141,7 +110,8 @@ export function AuthProvider({ children }) {
         user,
         accessToken,
         isAuthenticated: !!user,
-        isLoading,
+        sessionLoading,
+        authLoading,
         login,
         logout,
         getAccessToken,
