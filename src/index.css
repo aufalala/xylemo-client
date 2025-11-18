@@ -1,3 +1,46 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("./_assets/fonts/roboto/Roboto-VariableFont_wdth,wght.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --big-title: #CE2952;
+  --login-bg: #F0FAFF;
+  --main-bg: #FFFFFF;
+  --card: #F0FAFF;
+
+  --login-input: #FFFFFF;
+  --input: #FFFFFF;
+
+  --submit-button: #3D90A7;
+  --cancel-button: #C7C7C7;
+  --delete-button: #A73D3F;
+
+  --nav-text: #3D90A7;
+  --main-text: #3D90A7;
+  --header-text: #73BBE3;
+  --button-text: #FFFFFF;
+  --login-input-text: #3D90A7;
+  --input-text: #3D90A7;
+  
+
+  --ig: #BD00E7;
+  --tt: #00B096;
+
+  --status-connected: #A4FFA5;
+  --status-disconnected: #FFA4A4;
+
+  --bubble-order: #A4FFA5;
+  --bubble-failed: #FFA4A4;
+  --bubble-highlight: #FFF7A4;
+  
+  --slider-active: #A4FFA5;
+  --slider-inactive: #C7C7C7;
+  --slider-active-second: #3D90A7;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -9,12 +52,11 @@ button, input, div {
   font-weight: inherit;
 }
 
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+:root {
+  font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -23,6 +65,36 @@ button, input, div {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+html {
+  font-size: clamp(14px, 1vw, 20px);
+}
+
+#root {
+  font-family: Roboto;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  
+  /* width: 100vw;
+  height: 100vh; */
+  /* aspect-ratio: 16/9; */
+  
+  width: 100%;
+  min-width: 1200px;
+  height: auto;
+  /* aspect-ratio: 16/9; */
+}
+
+/* body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  min-height: 100vh;
+} */
+
+/*
 
 a {
   font-weight: 500;
@@ -33,13 +105,6 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
 
 h1 {
   font-size: 3.2em;
